@@ -19,11 +19,17 @@ router.get('/sign-token', (req, res) => {
 //-----------------We have successfully created a JWT and sent it to the client!---------------\\
 
 router.post('/verify-token', (req, res) => {
-    res.json({ message: 'Token is valid.' })
-})
+    try { 
+    //res.json({ message: 'Token is valid.' });
+    const token = req.headers.authorization.split(' ')[1];
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    //res.json({ token });
+    res.json({ decoded });
+  } catch(error) {
+    res.status(401).json({ error: 'Invalid token.' });
+  }
+  });
 
-
-
-
+  
 
 module.exports = router;
