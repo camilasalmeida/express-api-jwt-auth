@@ -18,6 +18,7 @@ router.get('/sign-token', (req, res) => {
 
 //-----------------We have successfully created a JWT and sent it to the client!---------------\\
 
+
 router.post('/verify-token', (req, res) => {
     try { 
     //res.json({ message: 'Token is valid.' });
@@ -30,6 +31,5 @@ router.post('/verify-token', (req, res) => {
   }
   });
 
-  
 
 module.exports = router;
