@@ -10,15 +10,19 @@ const SALT_LENGTH = 12;
 router.post('/signup', async (req, res) => {
     //res.json({ message: 'Signup route is working' });
     try {
-        const userInDatabase = await User.findOne({ username: req.body.username });
+        const userInDatabase = await User.findOne({ username: req.body.username });            // Checks if the username is already taken
         if (userInDatabase) {
             return res.status(400).json({error:'Username already taken.'})
         }
-        const user = await User.create({                               // Create a new user with hashed password.
+        const user = await User.create({                                                       // Create a new user with hashed password.
             username: req.body.username,
             hashedPassword: bcrypt.hashSync(req.body.password, SALT_LENGTH)
-        })                   
-        res.status(201).json({ user });
+        })          
+        const token = jwt.sign(                                                                 // This code will automatically authenticate the new user after signUp.
+            { username: user.username, _id: user._id },
+            process.env.JWT_SECRET
+        )         
+        res.status(201).json({ user, token });
     } catch(error) {
         res.status(400).json({ error: error.message })
     }
@@ -33,7 +37,7 @@ router.post('/signin', async (req, res) => {
                 process.env.JWT_SECRET
             );
             //res.json({ message: 'You are authorized' });
-            res.status(200).json({ token });
+            res.status(201).json({ token });
             
         } else {
             //res.json({ message: 'Invalid credentials.' })
