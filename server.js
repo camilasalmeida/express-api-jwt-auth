@@ -22,7 +22,7 @@ app.use(express.json());
 
 app.use('/test-jwt', testJWTRouter);
 app.use('/users', usersRouter);
-app.use('./profiles', profilesRouter);
+app.use('/profiles', profilesRouter);
 
 
 

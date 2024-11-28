@@ -14,6 +14,5 @@ function verifyToken (req, res, next) {                   // Adding the `next` p
   };
 
 
-
   module.exports = verifyToken;
 
